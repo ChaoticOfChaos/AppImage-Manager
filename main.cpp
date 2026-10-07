@@ -26,8 +26,7 @@ public:
 
 private:
     void on_button_clicked() {
-        std::cout << "AppImage Name: " << m_entry1.get_text() << std::endl;
-        std::cout << "AppImage Path: " << m_entry2.get_text() << std::endl;
+        copy_appimage(m_entry1.get_text(), m_entry2.get_text());
     }
 
     Gtk::Box m_box;
