@@ -1,5 +1,5 @@
 # Bits Manipulation Cryptography
-## Version Alpha-1.0.0
+## Version Alpha-1.1.0
 
 # What is It?
 A Simple Appimage Manager in GTK4.0

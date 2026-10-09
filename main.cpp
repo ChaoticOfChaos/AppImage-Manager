@@ -43,11 +43,17 @@ public:
         set_default_size(800, 600);
 
         m_box.set_margin(20);
-        m_label.set_text("AppImage Manager");
+        m_label.set_text("AppImages");
 
         m_add_button.signal_clicked().connect(sigc::mem_fun(*this, &window::call_add_window));
-        m_add_button.set_label("Add New AppImage");
+        m_add_button.set_icon_name("list-add-symbolic");
+        m_add_button.set_tooltip_text("Add New");
         m_box.append(m_add_button);
+
+        m_refresh_button.signal_clicked().connect(sigc::mem_fun(*this, &window::refresh_buttons));
+        m_refresh_button.set_icon_name("view-refresh-symbolic");
+        m_refresh_button.set_tooltip_text("Refresh");
+        m_box.append(m_refresh_button);
 
         m_box.append(m_label);
         
@@ -82,9 +88,29 @@ private:
         m_second->present();
     }
 
+    void refresh_buttons() {
+
+        while (auto* child = m_button_box.get_first_child()) m_button_box.remove(*child);
+
+        const auto appImages = listDir("./appimages/");
+
+        for (const auto& appImage : appImages) {
+            auto* button = Gtk::make_managed<Gtk::Button>(appImage);
+
+            button->signal_clicked().connect([this, name = appImage] {
+                m_label.set_text("Starting: " + name);
+                exec_appimage(name);
+            });
+
+            m_button_box.append(*button);
+        }
+        
+    }
+
     Gtk::Box m_box, m_button_box;
     Gtk::Label m_label;
     Gtk::Button m_add_button;
+    Gtk::Button m_refresh_button;
     std::unique_ptr<add_window> m_second;
 
 };
