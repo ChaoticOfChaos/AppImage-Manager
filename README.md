@@ -1,5 +1,5 @@
-# Bits Manipulation Cryptography
-## Version Alpha-2.0.1
+# Appimage Manager (Rust)
+## Version Alpha-2.0.2
 
 # What is It?
 A Simple Appimage Manager in GTK4.0
