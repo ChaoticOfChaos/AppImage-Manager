@@ -19,12 +19,14 @@ pub fn list_dir(dir: impl AsRef<Path>) -> io::Result<Vec<String>> {
 pub fn exec_appimage(appimage_name: String) -> Result<(), Box<dyn Error>> {
     let config_path = dirs::config_dir().ok_or("Open Config Path Error")?;
     let mut reader = csv::Reader::from_path(config_path.join("appimage-manager/settings.csv"))?;
+    let mut appimage_path = config_path.join("appimage-manager/appimages/");
 
     for result in reader.records() {
         let reg = result?;
         
         if reg.get(0) == Some(appimage_name.as_str()) {
-            let runner = Command::new(&reg[1]).spawn()?;
+            appimage_path.join(&reg[1]);
+            let runner = Command::new(appimage_path).spawn()?;
             println!("Stating AppImage {}", &reg[1]);
             return Ok(());
         }
@@ -37,7 +39,7 @@ pub fn exec_appimage(appimage_name: String) -> Result<(), Box<dyn Error>> {
 pub fn copy_appimage(appimage_name: String, appimage_path: String) -> Result<(), Box<dyn Error>> {
     let origin_path = Path::new(&appimage_path);
     let config_dir = dirs::config_dir().ok_or("Open Config Path Error")?;
-    let destiny_dir = config_dir.join("appimage-manager/appimages");
+    let destiny_dir = config_dir.join("appimage-manager/appimages/");
     let config_file_path = config_dir.join("appimage-manager/settings.csv");
 
     let name = origin_path
@@ -56,7 +58,7 @@ pub fn copy_appimage(appimage_name: String, appimage_path: String) -> Result<(),
         .has_headers(false)
         .from_writer(file);
 
-    writer.write_record([appimage_name.as_str(), destiny_file.to_string_lossy().as_ref()])?;
+    writer.write_record([appimage_name.as_str(), &name.to_string_lossy()])?;
     writer.flush()?;
 
     Ok(())

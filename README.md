@@ -1,5 +1,5 @@
 # Appimage Manager (Rust)
-## Version Alpha-2.0.2
+## Version Alpha-2.1.0
 
 # What is It?
 A Simple Appimage Manager in GTK4.0
