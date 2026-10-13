@@ -3,10 +3,22 @@
 pkgs.mkShell {
     nativeBuildInputs = with pkgs; [
         pkg-config
-        gcc
+        cargo
+        rustc
+        rustfmt
+        clippy
+        wrapGAppsHook4
     ];
 
     buildInputs = with pkgs; [
-        gtkmm4
+        gtk4
+        glib
+        cairo
+        pango
+        gdk-pixbuf
+        graphene
+        libadwaita
     ];
+
+    RUST_SRC_PATH="${pkgs.rustPlatform.rustLibSrc}";
 }
